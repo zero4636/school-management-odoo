@@ -1,0 +1,26 @@
+{
+    "name": "School Core",
+    "version": "1.0",
+    "summary": "School Management Core Module",
+    "description": "Manage Students, Teachers, Subjects, and Enrollments",
+    "author": "Dong TD",
+    "website": "https://odoo.test",
+    "category": "Education",
+    "depends": ["base"],
+    "data": [
+        "data/sequence.xml",
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "views/menus.xml",
+        "views/student_views.xml",
+        "views/teacher_views.xml",
+        "views/subject_views.xml",
+        "views/enrollment_views.xml",
+    ],
+    "demo": [
+        "data/demo_data.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

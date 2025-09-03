@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="menu_school_root" name="School"/>
+    <menuitem id="menu_school_students" name="Students" parent="menu_school_root" sequence="1"/>
+    <menuitem id="menu_school_teachers" name="Teachers" parent="menu_school_root" sequence="2"/>
+    <menuitem id="menu_school_subjects" name="Subjects" parent="menu_school_root" sequence="3"/>
+    <menuitem id="menu_school_enrollments" name="Enrollments" parent="menu_school_root" sequence="4"/>
+</odoo>

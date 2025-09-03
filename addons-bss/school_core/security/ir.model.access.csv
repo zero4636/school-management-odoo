@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_student_admin,access_student_admin,model_school_student,group_school_admin,1,1,1,1
+access_teacher_admin,access_teacher_admin,model_school_teacher,group_school_admin,1,1,1,1
+access_subject_admin,access_subject_admin,model_school_subject,group_school_admin,1,1,1,1
+access_enrollment_admin,access_enrollment_admin,model_school_enrollment,group_school_admin,1,1,1,1
+access_student_teacher,access_student_teacher,model_school_student,group_school_teacher,1,0,0,0
+access_subject_teacher,access_subject_teacher,model_school_subject,group_school_teacher,1,1,0,0
+access_enrollment_teacher,access_enrollment_teacher,model_school_enrollment,group_school_teacher,1,1,1,0
+access_student_student,access_student_student,model_school_student,group_school_student,1,0,0,0
+access_enrollment_student,access_enrollment_student,model_school_enrollment,group_school_student,1,0,1,0
