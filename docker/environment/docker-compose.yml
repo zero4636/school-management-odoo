@@ -1,0 +1,131 @@
+### TEMPLATES 2.2
+x-logging:
+    logging: &logging
+        options:
+            max-size: "10m"
+            max-file: "3"
+x-restart:
+    restart: &restart unless-stopped
+services:
+    odoo:
+        image: rogerdz/odoo:python-${ODOO_PYTHON_VERSION}
+        labels:
+            - traefik.enable=true
+
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}.rule=Host(`${VIRTUAL_HOST}`)
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}.entrypoints=http,https
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}.service=odoo-${COMPOSE_PROJECT_NAME}
+            - traefik.http.services.odoo-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8069
+
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-im.rule=Host(`${VIRTUAL_HOST}`) && (PathPrefix(`/longpolling`))
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-im.priority=10000
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-im.entrypoints=http,https
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-im.service=odoo-${COMPOSE_PROJECT_NAME}-im
+            - traefik.http.services.odoo-${COMPOSE_PROJECT_NAME}-im.loadbalancer.server.port=8072
+
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-websocket.rule=Host(`${VIRTUAL_HOST}`) && (PathPrefix(`/websocket`))
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-websocket.priority=10000
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-websocket.entrypoints=http,https
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}-websocket.service=odoo-${COMPOSE_PROJECT_NAME}-websocket
+            - traefik.http.services.odoo-${COMPOSE_PROJECT_NAME}-websocket.loadbalancer.server.port=8072
+
+            # Redirect all http requests to https and compress response
+            - traefik.http.routers.odoo-${COMPOSE_PROJECT_NAME}.middlewares=https-redirect@file,compression@file
+        networks:
+            - proxy
+            - internal
+            - mail
+        volumes:
+            - ${WORK_DIR}:/odoo:cached
+            - ~/.cache/pip:/home/odoo/.cache/pip:delegated
+            - odoo_local:/home/odoo/.local
+            - odoo_lib:/var/lib/odoo
+            - ~/.ssh:/home/odoo/.ssh:delegated
+            - ${CA_STORE:-/usr/local/share/ca-certificates}:/usr/local/share/ca-certificates:ro
+            - ~/.config/git:/home/odoo/.config/git:delegated
+        environment:
+            VIRTUAL_HOST: ${VIRTUAL_HOST}
+            UID: ${DOCKER_UID:-1000}
+            GID: ${DOCKER_GID:-1000}
+            ODOO_RC: ${ODOO_RC:-/odoo/debian/odoo.conf}
+            PROXY_MODE: ${ODOO_PROXY_MODE:-true}
+            SMTP_SERVER: ${ODOO_SMTP_SERVER}
+            SMTP_PORT: ${ODOO_SMTP_PORT}
+            DEV_FEATURES: ${ODOO_DEV_FEATURES}
+            DEBUGPY_ENABLE: ${ODOO_DEBUGPY_ENABLE}
+            PIP_BREAK_SYSTEM_PACKAGES: 1
+            BLOCK_OUTBOUND: ${BLOCK_OUTBOUND}
+        init: true
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        restart: *restart
+        logging: *logging
+        hostname: odoo-${COMPOSE_PROJECT_NAME}-docker
+        depends_on:
+            - db
+
+    db:
+        image: postgres:${POSTGRES_VERSION}
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_USER: ${POSTGRES_USER}
+        command: |
+            postgres
+              -c max_connections=${POSTGRES_MAX_CONNECTIONS:-200}
+              -c shared_buffers=${POSTGRES_SHARED_BUFFERS:-512MB}
+              -c effective_cache_size=${POSTGRES_EFFECTIVE_CACHE_SIZE:-8GB}
+              -c work_mem=${POSTGRES_WORK_MEM:-512MB}
+              -c maintenance_work_mem=${POSTGRES_MAINTENANCE_WORK_MEM:-128MB}
+              -c temp_buffers=${POSTGRES_TEMP_BUFFERS:-16MB}
+              -c min_wal_size=128MB
+              -c max_wal_size=2GB
+              -c checkpoint_completion_target=0.9
+              -c wal_buffers=16MB
+              -c default_statistics_target=100
+        networks:
+            internal:
+                aliases:
+                    - postgres
+            database:
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        restart: *restart
+        logging: *logging
+
+    adminer_service:
+        image: rogerdz/adminer
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.adminer-${COMPOSE_PROJECT_NAME}.rule=Host(`${VIRTUAL_HOST}`) && PathPrefix(`/adminer/`)
+            - traefik.http.routers.adminer-${COMPOSE_PROJECT_NAME}.priority=10000
+            - traefik.http.routers.adminer-${COMPOSE_PROJECT_NAME}.entrypoints=http,https
+            - traefik.http.routers.adminer-${COMPOSE_PROJECT_NAME}.middlewares=adminer-stripprefix@file,compression@file
+            - traefik.http.services.adminer-${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8080
+            # Redirect all http requests to https
+            - traefik.http.routers.adminer-${COMPOSE_PROJECT_NAME}.middlewares=https-redirect@file
+        environment:
+            ADMINER_DEFAULT_DRIVER: pgsql
+            ADMINER_DEFAULT_USERNAME: ${POSTGRES_USER}
+            ADMINER_DEFAULT_PASSWORD: ${POSTGRES_PASSWORD}
+            ADMINER_DEFAULT_SERVER: db
+        networks:
+            proxy:
+            internal:
+                aliases:
+                    - adminer
+        restart: *restart
+        logging: *logging
+networks:
+    proxy:
+        external: true
+    mail:
+        external: true
+    database:
+        external: true
+    internal:
+        driver: bridge
+volumes:
+    ? odoo_local
+    ? odoo_lib
+    ? postgres_data

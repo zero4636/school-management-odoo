@@ -1,0 +1,35 @@
+services:
+    odoo:
+        volumes:
+            - code:/odoo
+
+volumes:
+    code:
+
+x-mutagen:
+    sync:
+        defaults:
+            mode: two-way-resolved
+            symlink:
+                mode: posix-raw
+            ignore:
+                vcs: false
+                paths:
+                    - .DS_Store
+                    - __pycache__
+                    - *.pyc
+                    - ._*
+                    - "*~"
+                    - "*.sw[a-p]"
+                    - .idea
+                    - .vscode
+        code:
+            alpha: '${WORK_DIR}'
+            beta: 'volume://code'
+            permissions:
+                defaultDirectoryMode: 0755
+                defaultFileMode: 0644
+            configurationBeta:
+                permissions:
+                    defaultOwner: 'id:${DOCKER_UID:-1000}'
+                    defaultGroup: 'id:${DOCKER_GID:-1000}'

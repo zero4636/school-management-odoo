@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+DIR=$(dirname "$SCRIPT_DIR")
+
+if ! docker version > /dev/null 2>&1; then
+    echo "ERROR: Need install docker."
+    exit 1
+fi
+
+if [ ! -f $DIR/environment/.env ]; then
+    echo "ERROR: Having $DIR/environment/.env is required."
+    exit 1
+fi
+
+if [ ! -f $DIR/environment/service.json ]; then
+    echo "ERROR: Having $DIR/environment/service.json is required."
+    exit 1
+fi
+
+if [ ! -f $DIR/templates/docker-compose.yml ]; then
+    echo "ERROR: Having $DIR/templates/docker-compose.yml is required."
+    exit 1
+fi
+
+if [ ! -f $DIR/templates/docker-compose.mac.yml ]; then
+    echo "ERROR: Having $DIR/templates/docker-compose.mac.yml is required."
+    exit 1
+fi
+
+boolean() {
+    local str=$(echo "$1" | sed -e 's/\(.*\)/\L\1/') # convert lowercase
+    case $str in
+        "") echo 0 ;;
+        false) echo 0 ;;
+        0) echo 0 ;;
+        *) echo 1 ;;
+    esac
+}
+
+read_env_var() {
+    VAR=$(grep "^$1=" $DIR/environment/.env | xargs)
+    IFS="=" read -ra VAR <<< "$VAR"
+    IFS=" "
+    echo ${VAR[1]}
+}
+
+convert_traefik_url() {
+    if [ $# -eq 0 ]; then
+        separator=" || "
+        regex="$( printf "${separator}Host(\`%s\`)" "${hosts[@]}" )"
+        regex="${regex:${#separator}}"
+        echo "${regex}"
+    else
+        separator=" || "
+        regex="$( printf "${separator}Host(\`$1%s\`)" "${hosts[@]}" )"
+        regex="${regex:${#separator}}"
+        echo "${regex}"
+    fi
+}
+
+prefix_url() {
+    separator=" $1"
+    regex="$( printf "${separator}%s" "${hosts[@]}" )"
+    regex="${regex:${#separator}}"
+    echo $1${regex}
+}
+
+jinja() {
+    docker run --rm -it \
+        --security-opt seccomp:unconfined \
+        -v $DIR:$DIR \
+        -u $(id -u):$(id -g) \
+        rogerdz/jinja2-cli "$@"
+}
+
+hosts=($(read_env_var VIRTUAL_HOST))
+
+jinja $DIR/templates/docker-compose.yml \
+    -D hosts="$(read_env_var VIRTUAL_HOST)" \
+    -D traefik_hosts="$(convert_traefik_url)" \
+    -D xhprof_hosts="$(prefix_url xhprof.)" \
+    -D selenium_hosts="$(prefix_url selenium.)" \
+    -D ngrok_hosts="$(prefix_url ngrok.)" \
+    -D fake_ip_enable="$(boolean $(read_env_var FAKE_IP_ENABLE))" \
+    --format=yaml \
+    -D xhprof_traefik_hosts="$(convert_traefik_url xhprof.)" \
+    -D selenium_traefik_hosts="$(convert_traefik_url selenium.)" \
+    -D ngrok_traefik_hosts="$(convert_traefik_url ngrok.)" \
+    $DIR/environment/service.json > $DIR/environment/docker-compose.yml
+echo "SUCCESS: Generate $DIR/environment/docker-compose.yml"
+
+jinja $DIR/templates/docker-compose.mac.yml \
+    -D hosts="$(read_env_var VIRTUAL_HOST)" \
+    --format=yaml \
+    $DIR/environment/service.json > $DIR/environment/docker-compose.mac.yml
+echo "SUCCESS: Generate $DIR/environment/docker-compose.mac.yml"
+
+mkdir -p ~/.composer
+mkdir -p ~/.ssh
+touch ~/.config/git/credentials

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+DIR=$(dirname "$SCRIPT_DIR")
+WORK_DIR=$(dirname "$DIR")
+
+docker run -it --rm \
+    -v ${WORK_DIR}:/app \
+    --network host \
+    -u $(id -u):$(id -g) \
+    rogerdz/magepack magepack "$@"
