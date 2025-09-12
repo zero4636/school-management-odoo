@@ -1,0 +1,18 @@
+<odoo>
+    <template id="portal_student_page" name="Portal Student Page">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs"><li>Student</li></t>
+            <div class="container">
+                <h3>Hello <t t-esc="student.name"/></h3>
+                <p>Enrolled Subjects:</p>
+                <ul>
+                    <t t-foreach="student.enrollment_ids" t-as="enr">
+                        <li><t t-esc="enr.subject_id.name"/></li>
+                    </t>
+                </ul>
+                <!-- Legacy JS Widget -->
+                <div id="student_status_widget"></div>
+            </div>
+        </t>
+    </template>
+</odoo>

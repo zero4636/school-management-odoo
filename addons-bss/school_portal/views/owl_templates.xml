@@ -1,0 +1,22 @@
+<odoo>
+    <template id="owl_templates" name="OWL Components" inherit_id="web.layout">
+        <xpath expr="//body" position="inside">
+            <t t-name="school_portal.SubjectFilter" owl="1">
+                <div>
+                    <label>Select Subject: </label>
+                    <select t-on-change="selectSubject">
+                        <option value="">-- choose --</option>
+                        <t t-foreach="state.subjects" t-as="s">
+                            <option t-att-value="s.id"><t t-esc="s.name"/></option>
+                        </t>
+                    </select>
+                    <ul>
+                        <t t-foreach="state.students" t-as="st">
+                            <li><t t-esc="st.name"/></li>
+                        </t>
+                    </ul>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
