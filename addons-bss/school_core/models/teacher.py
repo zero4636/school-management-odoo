@@ -38,7 +38,10 @@ class Teacher(models.Model):
                 'name': vals.get('name') or 'Unknown',
                 'login': login,
                 'password': password,
-                'groups_id': [(6, 0, [self.env.ref('school_core.group_school_teacher').id])]
+                'groups_id': [(6, 0, [
+                    self.env.ref('school_core.group_school_teacher').id,
+                    self.env.ref('base.group_user').id,
+                ])]
             })
             vals['user_id'] = user.id
 
