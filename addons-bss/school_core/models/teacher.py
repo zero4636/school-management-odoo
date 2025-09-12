@@ -4,10 +4,16 @@ from odoo.exceptions import UserError
 class Teacher(models.Model):
     _name = "school.teacher"
     _description = "Teacher"
+    _inherits = {"res.users": "user_id"}
 
-    name = fields.Char("Name", required=True)
+    user_id = fields.Many2one(
+        "res.users",
+        string="User Account",
+        required=True,
+        ondelete="cascade"
+    )
+
     employee_code = fields.Char("Employee Code", required=True, copy=False, index=True)
-    user_id = fields.Many2one("res.users", string="User Account")
     subject_ids = fields.One2many("school.subject", "teacher_id", string="Subjects")
 
     _sql_constraints = [
@@ -21,4 +27,20 @@ class Teacher(models.Model):
             if not seq:
                 raise UserError("The 'school.teacher' sequence is not configured properly!")
             vals['employee_code'] = seq
+
+        if not vals.get('user_id'):
+            login = vals.get('login')
+            password = vals.get('password')
+            if not login or not password:
+                raise UserError("You must provide login and password when creating a teacher.")
+
+            user = self.env['res.users'].create({
+                'name': vals.get('name') or 'Unknown',
+                'login': login,
+                'password': password,
+                'groups_id': [(6, 0, [self.env.ref('school_core.group_school_teacher').id])]
+            })
+            vals['user_id'] = user.id
+
         return super(Teacher, self).create(vals)
+

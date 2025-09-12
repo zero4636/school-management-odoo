@@ -1,39 +1,64 @@
 <odoo>
+    <!-- ======= Teacher Users ======= -->
+    <record id="user_john" model="res.users">
+        <field name="name">John Smith</field>
+        <field name="login">john.smith@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+
+    <record id="user_mary" model="res.users">
+        <field name="name">Mary Johnson</field>
+        <field name="login">mary.johnson@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+
+    <!-- ======= Teachers ======= -->
     <record id="teacher_john" model="school.teacher">
         <field name="name">John Smith</field>
         <field name="employee_code">T001</field>
+        <field name="user_id" ref="user_john"/>
     </record>
+
     <record id="teacher_mary" model="school.teacher">
         <field name="name">Mary Johnson</field>
         <field name="employee_code">T002</field>
+        <field name="user_id" ref="user_mary"/>
     </record>
 
+    <!-- ======= Students ======= -->
     <record id="student_alex" model="school.student">
         <field name="name">Alex Nguyen</field>
         <field name="student_id">S001</field>
         <field name="gender">male</field>
     </record>
+
     <record id="student_linh" model="school.student">
         <field name="name">Linh Tran</field>
         <field name="student_id">S002</field>
         <field name="gender">female</field>
     </record>
 
+    <!-- ======= Subjects ======= -->
     <record id="subject_math" model="school.subject">
         <field name="name">Mathematics</field>
         <field name="credit">3</field>
         <field name="teacher_id" ref="teacher_john"/>
     </record>
+
     <record id="subject_history" model="school.subject">
         <field name="name">History</field>
         <field name="credit">2</field>
         <field name="teacher_id" ref="teacher_mary"/>
     </record>
 
+    <!-- ======= Enrollments ======= -->
     <record id="enrollment_alex_math" model="school.enrollment">
         <field name="student_id" ref="student_alex"/>
         <field name="subject_id" ref="subject_math"/>
     </record>
+
     <record id="enrollment_linh_history" model="school.enrollment">
         <field name="student_id" ref="student_linh"/>
         <field name="subject_id" ref="subject_history"/>

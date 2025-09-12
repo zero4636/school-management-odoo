@@ -54,5 +54,7 @@
     <menuitem id="menu_school_students_action"
               name="Students"
               parent="menu_school_students"
-              action="action_school_students"/>
+              action="action_school_students"
+              groups="school_core.group_school_admin,school_core.group_school_student"/>
+    />
 </odoo>

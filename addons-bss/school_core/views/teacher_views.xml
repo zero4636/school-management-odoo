@@ -19,7 +19,9 @@
                     <group>
                         <field name="name"/>
                         <field name="employee_code" invisible="1"/>
-                        <field name="user_id"/>
+                        <field name="login"/>
+                        <field name="password"/>
+                        <field name="active"/>
                     </group>
                     <notebook>
                         <page string="Subjects">
@@ -43,5 +45,7 @@
     </record>
 
     <menuitem id="menu_school_teachers_action" name="Teachers"
-              parent="menu_school_teachers" action="action_school_teachers"/>
+              parent="menu_school_teachers" action="action_school_teachers"
+              groups="school_core.group_school_admin,school_core.group_school_teacher"
+    />
 </odoo>

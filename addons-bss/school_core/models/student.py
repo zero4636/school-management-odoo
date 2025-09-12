@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class Student(models.Model):
     _name = "school.student"
@@ -16,7 +16,6 @@ class Student(models.Model):
     user_id = fields.Many2one("res.users", string="User Account")
     enrollment_ids = fields.One2many("school.enrollment", "student_id", string="Enrollments")
     active = fields.Boolean("Active", default=True)
-
     age = fields.Integer("Age", compute="_compute_age", store=True)
 
     @api.depends("dob")
@@ -31,6 +30,12 @@ class Student(models.Model):
     _sql_constraints = [
         ('unique_student_id', 'unique(student_id)', 'Student ID must be unique!')
     ]
+
+    @api.constrains('dob')
+    def _check_dob(self):
+        for student in self:
+            if student.dob and student.dob > fields.Date.today():
+                raise ValidationError("Date of Birth cannot be in the future.")
 
     @api.model
     def create(self, vals):
