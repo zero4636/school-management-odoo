@@ -1,0 +1,9 @@
+/* Variables riêng cho module */
+$primary-color: #007bff;
+$success-color: #28a745;
+$inactive-color: #6c757d;
+
+.student-status {
+    &.active { color: $success-color; font-weight: bold; }
+    &.inactive { color: $inactive-color; font-weight: bold; }
+}

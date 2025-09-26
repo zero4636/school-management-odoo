@@ -11,7 +11,7 @@
                     </t>
                 </ul>
                 <!-- Legacy JS Widget -->
-                <div id="student_status_widget"></div>
+                <t t-call="school_portal.student_status"/>
             </div>
         </t>
     </template>

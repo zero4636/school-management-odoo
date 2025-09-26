@@ -37,11 +37,12 @@ class Student(models.Model):
             if student.dob and student.dob > fields.Date.today():
                 raise ValidationError("Date of Birth cannot be in the future.")
 
-    @api.model
-    def create(self, vals):
-        if not vals.get('student_id'):
-            seq = self.env['ir.sequence'].next_by_code('school.student')
-            if not seq:
-                raise UserError("The 'school.student' sequence is not configured properly!")
-            vals['student_id'] = seq
-        return super(Student, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('student_id'):
+                seq = self.env['ir.sequence'].next_by_code('school.student')
+                if not seq:
+                    raise UserError("The 'school.student' sequence is not configured properly!")
+                vals['student_id'] = seq
+        return super(Student, self).create(vals_list)
