@@ -1,17 +1,21 @@
 <odoo>
     <template id="portal_student_page" name="Portal Student Page">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs"><li>Student</li></t>
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Student</t>
+            </t>
             <div class="container">
-                <h3>Hello <t t-esc="student.name"/></h3>
-                <p>Enrolled Subjects:</p>
-                <ul>
-                    <t t-foreach="student.enrollment_ids" t-as="enr">
-                        <li><t t-esc="enr.subject_id.name"/></li>
-                    </t>
-                </ul>
-                <!-- Legacy JS Widget -->
-                <t t-call="school_portal.student_status"/>
+                <t t-foreach="students" t-as="student">
+                    <h3>Hello <t t-esc="student.name"/></h3>
+                    <p>Enrolled Subjects:</p>
+                    <ul>
+                        <t t-foreach="student.enrollment_ids" t-as="enr">
+                            <li><t t-esc="enr.subject_id.name"/></li>
+                        </t>
+                    </ul>
+                    <hr/>
+                </t>
             </div>
         </t>
     </template>

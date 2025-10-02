@@ -1,7 +1,0 @@
-<odoo>
-    <template id="student_status_template" name="Student Status">
-        <t t-name="school_portal.student_status">
-            <span id="student_status_widget" t-att-data-active="student.active"></span>
-        </t>
-    </template>
-</odoo>
