@@ -1,0 +1,325 @@
+<odoo>
+    <template id="portal_my_home_menu_student" name="Portal layout : student menu entries"
+              inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name in ['students', 'student']"
+                t-attf-class="breadcrumb-item #{'active' if page_name == 'student' else ''}">
+                <a t-attf-href="/my/students">Students</a>
+                <t t-if="page_name == 'student'">
+                    <span class="mx-1">/</span>
+                    <span t-esc="student.name"/>
+                </t>
+            </li>
+
+            <li t-if="page_name in ['teachers', 'teacher']"
+                t-attf-class="breadcrumb-item #{'active' if page_name == 'teacher' else ''}">
+                <a t-attf-href="/my/teachers">Teachers</a>
+                <t t-if="page_name == 'teacher'">
+                    <span class="mx-1">/</span>
+                    <span t-esc="teacher.name"/>
+                </t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_student_page" name="My Students">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Students</t>
+            </t>
+
+            <t t-if="not students">
+                <p class="alert alert-warning">No students available.</p>
+            </t>
+
+            <t t-if="students" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Student #</th>
+                        <th>Name</th>
+                        <th>Date of Birth</th>
+                        <th>Gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="students" t-as="student">
+                        <tr>
+                            <td>
+                                <a t-att-href="'/my/students/%s' % student.id" t-att-title="student.name">
+                                    <t t-out="student.student_id"/>
+                                </a>
+                            </td>
+                            <td>
+                                <t t-out="student.name"/>
+                            </td>
+                            <td>
+                                <t t-out="student.dob"/>
+                            </td>
+                            <td>
+                                <t t-out="student.gender"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_teacher_page" name="My Teachers">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Teachers</t>
+            </t>
+
+            <t t-if="not teachers">
+                <p class="alert alert-warning">No teachers available.</p>
+            </t>
+
+            <t t-if="teachers" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Employee Code</th>
+                        <th>Name</th>
+                        <th>Subjects</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="teachers" t-as="teacher">
+                        <tr>
+                            <td>
+                                <a t-att-href="'/my/teachers/%s' % teacher.id" t-att-title="teacher.name">
+                                    <t t-out="teacher.employee_code"/>
+                                </a>
+                            </td>
+                            <td>
+                                <t t-out="teacher.name"/>
+                            </td>
+                            <td>
+                                <t t-foreach="teacher.subject_ids" t-as="subj">
+                                    <span t-out="subj.name"/>
+                                    <t t-if="subj != teacher.subject_ids[-1]">,</t>
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_student_detail_page" name="Portal Student Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Student</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row mb-3">
+                    <div class="col">
+                        <p class="text-muted">Student ID:
+                            <t t-esc="student.student_id"/>
+                        </p>
+                    </div>
+                    <div class="col text-end">
+                        <span class="badge bg-success" t-if="student.active">Active</span>
+                        <span class="badge bg-secondary" t-else="">Inactive</span>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        Personal Information
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-md-4">
+                            <strong>Date of Birth:</strong>
+                            <t t-esc="student.dob or 'N/A'"/>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Age:</strong>
+                            <t t-esc="student.age or 'N/A'"/>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Gender:</strong>
+                            <t t-esc="student.gender or 'N/A'"/>
+                        </div>
+                        <div class="col-md-12 mt-2" t-if="student.user_id">
+                            <strong>User Account:</strong>
+                            <t t-esc="student.user_id.login"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header bg-info text-white">
+                        Enrolled Subjects
+                    </div>
+                    <div class="card-body">
+                        <t t-if="student.enrollment_ids">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Subject</th>
+                                        <th>Teacher</th>
+                                        <th>Credit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="student.enrollment_ids" t-as="enr">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="enr_index + 1"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="enr.subject_id.name"/>
+                                            </td>
+                                            <td>
+                                                <t t-if="enr.subject_id.teacher_id">
+                                                    <t t-esc="enr.subject_id.teacher_id.name"/>
+                                                </t>
+                                                <t t-else="">-</t>
+                                            </td>
+                                            <td>
+                                                <t t-esc="enr.subject_id.credit"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <p class="text-muted">No subjects enrolled.</p>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <a class="btn btn-outline-primary" href="/my/students">Back to Students</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_teacher_detail_page" name="Portal Teacher Detail Enhanced">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Teacher</t>
+            </t>
+
+            <div class="container mt-4">
+                <div class="row mb-3 align-items-center">
+                    <div class="col">
+                        <p class="text-muted">Employee Code:
+                            <t t-esc="teacher.employee_code"/>
+                        </p>
+                    </div>
+                    <div class="col text-end">
+                        <span class="badge bg-success" t-if="teacher.active">Active</span>
+                        <span class="badge bg-secondary" t-else="">Inactive</span>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        Personal Information
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-md-4" t-if="teacher.user_id">
+                            <strong>User Account:</strong>
+                            <t t-esc="teacher.user_id.login"/>
+                        </div>
+                        <div class="col-md-4" t-if="teacher.phone">
+                            <strong>Phone:</strong>
+                            <t t-esc="teacher.phone"/>
+                        </div>
+                        <div class="col-md-4" t-if="teacher.email">
+                            <strong>Email:</strong>
+                            <t t-esc="teacher.email"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        Subjects &amp; Students
+                    </div>
+                    <div class="card-body">
+                        <t t-if="teacher.subject_ids">
+                            <t t-foreach="teacher.subject_ids" t-as="subject">
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="mb-0"><t t-esc="subject_index + 1"/>.
+                                            <t t-esc="subject.name"/>
+                                        </h5>
+                                        <span class="badge bg-secondary">Credit:
+                                            <t t-esc="subject.credit"/>
+                                        </span>
+                                    </div>
+
+                                    <t t-if="subject.enrollment_ids">
+                                        <table class="table table-sm table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Student</th>
+                                                    <th>Status</th>
+                                                    <th>Enrollment Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="subject.enrollment_ids" t-as="enr">
+                                                    <tr>
+                                                        <td>
+                                                            <t t-esc="enr_index + 1"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="enr.student_id.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-if="enr.state=='draft'">
+                                                                <span class="badge bg-secondary">Draft</span>
+                                                            </t>
+                                                            <t t-elif="enr.state=='active'">
+                                                                <span class="badge bg-success">Active</span>
+                                                            </t>
+                                                            <t t-elif="enr.state=='done'">
+                                                                <span class="badge bg-primary">Completed</span>
+                                                            </t>
+                                                            <t t-elif="enr.state=='cancel'">
+                                                                <span class="badge bg-danger">Cancelled</span>
+                                                            </t>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="enr.enrollment_date"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </t>
+                                    <t t-else="">
+                                        <p class="text-muted">No students enrolled in this subject.</p>
+                                    </t>
+                                </div>
+                                <hr/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p class="text-muted">This teacher is not assigned to any subject.</p>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <a class="btn btn-outline-primary" href="/my/teachers">Back to Teachers</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

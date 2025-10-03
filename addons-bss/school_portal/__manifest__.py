@@ -7,8 +7,7 @@
     "website": "https://odoo.test",
     "category": "Education",
     "data": [
-        "views/portal_student.xml",
-        "views/portal_teacher.xml"
+        "views/portal_template.xml"
     ],
     "installable": True,
     "application": True,
