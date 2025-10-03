@@ -1,66 +1,483 @@
+<?xml version='1.0' encoding='UTF-8'?>
 <odoo>
-    <!-- ======= Teacher Users ======= -->
-    <record id="user_john" model="res.users">
-        <field name="name">John Smith</field>
-        <field name="login">john.smith@example.com</field>
+    <record id="user_teacher_1" model="res.users">
+        <field name="name">Teacher 1</field>
+        <field name="login">teacher1@example.com</field>
         <field name="password">123456</field>
         <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
     </record>
-
-    <record id="user_mary" model="res.users">
-        <field name="name">Mary Johnson</field>
-        <field name="login">mary.johnson@example.com</field>
+    <record id="teacher_1" model="school.teacher">
+        <field name="name">Teacher 1</field>
+        <field name="employee_code">T1001</field>
+        <field name="user_id" ref="user_teacher_1"/>
+    </record>
+    <record id="user_teacher_2" model="res.users">
+        <field name="name">Teacher 2</field>
+        <field name="login">teacher2@example.com</field>
         <field name="password">123456</field>
         <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
     </record>
-
-    <!-- ======= Teachers ======= -->
-    <record id="teacher_john" model="school.teacher">
-        <field name="name">John Smith</field>
-        <field name="employee_code">T001</field>
-        <field name="user_id" ref="user_john"/>
+    <record id="teacher_2" model="school.teacher">
+        <field name="name">Teacher 2</field>
+        <field name="employee_code">T1002</field>
+        <field name="user_id" ref="user_teacher_2"/>
     </record>
-
-    <record id="teacher_mary" model="school.teacher">
-        <field name="name">Mary Johnson</field>
-        <field name="employee_code">T002</field>
-        <field name="user_id" ref="user_mary"/>
+    <record id="user_teacher_3" model="res.users">
+        <field name="name">Teacher 3</field>
+        <field name="login">teacher3@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
     </record>
-
-    <!-- ======= Students ======= -->
-    <record id="student_alex" model="school.student">
-        <field name="name">Alex Nguyen</field>
-        <field name="student_id">S001</field>
+    <record id="teacher_3" model="school.teacher">
+        <field name="name">Teacher 3</field>
+        <field name="employee_code">T1003</field>
+        <field name="user_id" ref="user_teacher_3"/>
+    </record>
+    <record id="user_teacher_4" model="res.users">
+        <field name="name">Teacher 4</field>
+        <field name="login">teacher4@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_4" model="school.teacher">
+        <field name="name">Teacher 4</field>
+        <field name="employee_code">T1004</field>
+        <field name="user_id" ref="user_teacher_4"/>
+    </record>
+    <record id="user_teacher_5" model="res.users">
+        <field name="name">Teacher 5</field>
+        <field name="login">teacher5@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_5" model="school.teacher">
+        <field name="name">Teacher 5</field>
+        <field name="employee_code">T1005</field>
+        <field name="user_id" ref="user_teacher_5"/>
+    </record>
+    <record id="user_teacher_6" model="res.users">
+        <field name="name">Teacher 6</field>
+        <field name="login">teacher6@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_6" model="school.teacher">
+        <field name="name">Teacher 6</field>
+        <field name="employee_code">T1006</field>
+        <field name="user_id" ref="user_teacher_6"/>
+    </record>
+    <record id="user_teacher_7" model="res.users">
+        <field name="name">Teacher 7</field>
+        <field name="login">teacher7@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_7" model="school.teacher">
+        <field name="name">Teacher 7</field>
+        <field name="employee_code">T1007</field>
+        <field name="user_id" ref="user_teacher_7"/>
+    </record>
+    <record id="user_teacher_8" model="res.users">
+        <field name="name">Teacher 8</field>
+        <field name="login">teacher8@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_8" model="school.teacher">
+        <field name="name">Teacher 8</field>
+        <field name="employee_code">T1008</field>
+        <field name="user_id" ref="user_teacher_8"/>
+    </record>
+    <record id="user_teacher_9" model="res.users">
+        <field name="name">Teacher 9</field>
+        <field name="login">teacher9@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_9" model="school.teacher">
+        <field name="name">Teacher 9</field>
+        <field name="employee_code">T1009</field>
+        <field name="user_id" ref="user_teacher_9"/>
+    </record>
+    <record id="user_teacher_10" model="res.users">
+        <field name="name">Teacher 10</field>
+        <field name="login">teacher10@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_10" model="school.teacher">
+        <field name="name">Teacher 10</field>
+        <field name="employee_code">T1010</field>
+        <field name="user_id" ref="user_teacher_10"/>
+    </record>
+    <record id="user_teacher_11" model="res.users">
+        <field name="name">Teacher 11</field>
+        <field name="login">teacher11@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_11" model="school.teacher">
+        <field name="name">Teacher 11</field>
+        <field name="employee_code">T1011</field>
+        <field name="user_id" ref="user_teacher_11"/>
+    </record>
+    <record id="user_teacher_12" model="res.users">
+        <field name="name">Teacher 12</field>
+        <field name="login">teacher12@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_12" model="school.teacher">
+        <field name="name">Teacher 12</field>
+        <field name="employee_code">T1012</field>
+        <field name="user_id" ref="user_teacher_12"/>
+    </record>
+    <record id="user_teacher_13" model="res.users">
+        <field name="name">Teacher 13</field>
+        <field name="login">teacher13@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_13" model="school.teacher">
+        <field name="name">Teacher 13</field>
+        <field name="employee_code">T1013</field>
+        <field name="user_id" ref="user_teacher_13"/>
+    </record>
+    <record id="user_teacher_14" model="res.users">
+        <field name="name">Teacher 14</field>
+        <field name="login">teacher14@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_14" model="school.teacher">
+        <field name="name">Teacher 14</field>
+        <field name="employee_code">T1014</field>
+        <field name="user_id" ref="user_teacher_14"/>
+    </record>
+    <record id="user_teacher_15" model="res.users">
+        <field name="name">Teacher 15</field>
+        <field name="login">teacher15@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_15" model="school.teacher">
+        <field name="name">Teacher 15</field>
+        <field name="employee_code">T1015</field>
+        <field name="user_id" ref="user_teacher_15"/>
+    </record>
+    <record id="user_teacher_16" model="res.users">
+        <field name="name">Teacher 16</field>
+        <field name="login">teacher16@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_16" model="school.teacher">
+        <field name="name">Teacher 16</field>
+        <field name="employee_code">T1016</field>
+        <field name="user_id" ref="user_teacher_16"/>
+    </record>
+    <record id="user_teacher_17" model="res.users">
+        <field name="name">Teacher 17</field>
+        <field name="login">teacher17@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_17" model="school.teacher">
+        <field name="name">Teacher 17</field>
+        <field name="employee_code">T1017</field>
+        <field name="user_id" ref="user_teacher_17"/>
+    </record>
+    <record id="user_teacher_18" model="res.users">
+        <field name="name">Teacher 18</field>
+        <field name="login">teacher18@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_18" model="school.teacher">
+        <field name="name">Teacher 18</field>
+        <field name="employee_code">T1018</field>
+        <field name="user_id" ref="user_teacher_18"/>
+    </record>
+    <record id="user_teacher_19" model="res.users">
+        <field name="name">Teacher 19</field>
+        <field name="login">teacher19@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_19" model="school.teacher">
+        <field name="name">Teacher 19</field>
+        <field name="employee_code">T1019</field>
+        <field name="user_id" ref="user_teacher_19"/>
+    </record>
+    <record id="user_teacher_20" model="res.users">
+        <field name="name">Teacher 20</field>
+        <field name="login">teacher20@example.com</field>
+        <field name="password">123456</field>
+        <field name="groups_id" eval="[(6,0,[ref('school_core.group_school_teacher')])]"/>
+    </record>
+    <record id="teacher_20" model="school.teacher">
+        <field name="name">Teacher 20</field>
+        <field name="employee_code">T1020</field>
+        <field name="user_id" ref="user_teacher_20"/>
+    </record>
+    <record id="student_1" model="school.student">
+        <field name="name">Student 1</field>
+        <field name="student_id">S1001</field>
         <field name="gender">male</field>
+        <field name="dob">2008-02-02</field>
     </record>
-
-    <record id="student_linh" model="school.student">
-        <field name="name">Linh Tran</field>
-        <field name="student_id">S002</field>
+    <record id="student_2" model="school.student">
+        <field name="name">Student 2</field>
+        <field name="student_id">S1002</field>
         <field name="gender">female</field>
+        <field name="dob">2009-03-03</field>
     </record>
-
-    <!-- ======= Subjects ======= -->
-    <record id="subject_math" model="school.subject">
-        <field name="name">Mathematics</field>
+    <record id="student_3" model="school.student">
+        <field name="name">Student 3</field>
+        <field name="student_id">S1003</field>
+        <field name="gender">male</field>
+        <field name="dob">2010-04-04</field>
+    </record>
+    <record id="student_4" model="school.student">
+        <field name="name">Student 4</field>
+        <field name="student_id">S1004</field>
+        <field name="gender">female</field>
+        <field name="dob">2011-05-05</field>
+    </record>
+    <record id="student_5" model="school.student">
+        <field name="name">Student 5</field>
+        <field name="student_id">S1005</field>
+        <field name="gender">male</field>
+        <field name="dob">2012-06-06</field>
+    </record>
+    <record id="student_6" model="school.student">
+        <field name="name">Student 6</field>
+        <field name="student_id">S1006</field>
+        <field name="gender">female</field>
+        <field name="dob">2007-07-07</field>
+    </record>
+    <record id="student_7" model="school.student">
+        <field name="name">Student 7</field>
+        <field name="student_id">S1007</field>
+        <field name="gender">male</field>
+        <field name="dob">2008-08-08</field>
+    </record>
+    <record id="student_8" model="school.student">
+        <field name="name">Student 8</field>
+        <field name="student_id">S1008</field>
+        <field name="gender">female</field>
+        <field name="dob">2009-09-09</field>
+    </record>
+    <record id="student_9" model="school.student">
+        <field name="name">Student 9</field>
+        <field name="student_id">S1009</field>
+        <field name="gender">male</field>
+        <field name="dob">2010-10-10</field>
+    </record>
+    <record id="student_10" model="school.student">
+        <field name="name">Student 10</field>
+        <field name="student_id">S1010</field>
+        <field name="gender">female</field>
+        <field name="dob">2011-11-11</field>
+    </record>
+    <record id="student_11" model="school.student">
+        <field name="name">Student 11</field>
+        <field name="student_id">S1011</field>
+        <field name="gender">male</field>
+        <field name="dob">2012-12-12</field>
+    </record>
+    <record id="student_12" model="school.student">
+        <field name="name">Student 12</field>
+        <field name="student_id">S1012</field>
+        <field name="gender">female</field>
+        <field name="dob">2007-01-13</field>
+    </record>
+    <record id="student_13" model="school.student">
+        <field name="name">Student 13</field>
+        <field name="student_id">S1013</field>
+        <field name="gender">male</field>
+        <field name="dob">2008-02-14</field>
+    </record>
+    <record id="student_14" model="school.student">
+        <field name="name">Student 14</field>
+        <field name="student_id">S1014</field>
+        <field name="gender">female</field>
+        <field name="dob">2009-03-15</field>
+    </record>
+    <record id="student_15" model="school.student">
+        <field name="name">Student 15</field>
+        <field name="student_id">S1015</field>
+        <field name="gender">male</field>
+        <field name="dob">2010-04-16</field>
+    </record>
+    <record id="student_16" model="school.student">
+        <field name="name">Student 16</field>
+        <field name="student_id">S1016</field>
+        <field name="gender">female</field>
+        <field name="dob">2011-05-17</field>
+    </record>
+    <record id="student_17" model="school.student">
+        <field name="name">Student 17</field>
+        <field name="student_id">S1017</field>
+        <field name="gender">male</field>
+        <field name="dob">2012-06-18</field>
+    </record>
+    <record id="student_18" model="school.student">
+        <field name="name">Student 18</field>
+        <field name="student_id">S1018</field>
+        <field name="gender">female</field>
+        <field name="dob">2007-07-19</field>
+    </record>
+    <record id="student_19" model="school.student">
+        <field name="name">Student 19</field>
+        <field name="student_id">S1019</field>
+        <field name="gender">male</field>
+        <field name="dob">2008-08-20</field>
+    </record>
+    <record id="student_20" model="school.student">
+        <field name="name">Student 20</field>
+        <field name="student_id">S1020</field>
+        <field name="gender">female</field>
+        <field name="dob">2009-09-21</field>
+    </record>
+    <record id="subject_1" model="school.subject">
+        <field name="name">Subject 1</field>
         <field name="credit">3</field>
-        <field name="teacher_id" ref="teacher_john"/>
+        <field name="teacher_id" ref="teacher_1"/>
     </record>
-
-    <record id="subject_history" model="school.subject">
-        <field name="name">History</field>
+    <record id="subject_2" model="school.subject">
+        <field name="name">Subject 2</field>
+        <field name="credit">4</field>
+        <field name="teacher_id" ref="teacher_2"/>
+    </record>
+    <record id="subject_3" model="school.subject">
+        <field name="name">Subject 3</field>
         <field name="credit">2</field>
-        <field name="teacher_id" ref="teacher_mary"/>
+        <field name="teacher_id" ref="teacher_3"/>
     </record>
-
-    <!-- ======= Enrollments ======= -->
-    <record id="enrollment_alex_math" model="school.enrollment">
-        <field name="student_id" ref="student_alex"/>
-        <field name="subject_id" ref="subject_math"/>
+    <record id="subject_4" model="school.subject">
+        <field name="name">Subject 4</field>
+        <field name="credit">3</field>
+        <field name="teacher_id" ref="teacher_4"/>
     </record>
-
-    <record id="enrollment_linh_history" model="school.enrollment">
-        <field name="student_id" ref="student_linh"/>
-        <field name="subject_id" ref="subject_history"/>
+    <record id="subject_5" model="school.subject">
+        <field name="name">Subject 5</field>
+        <field name="credit">4</field>
+        <field name="teacher_id" ref="teacher_5"/>
+    </record>
+    <record id="subject_6" model="school.subject">
+        <field name="name">Subject 6</field>
+        <field name="credit">2</field>
+        <field name="teacher_id" ref="teacher_6"/>
+    </record>
+    <record id="subject_7" model="school.subject">
+        <field name="name">Subject 7</field>
+        <field name="credit">3</field>
+        <field name="teacher_id" ref="teacher_7"/>
+    </record>
+    <record id="subject_8" model="school.subject">
+        <field name="name">Subject 8</field>
+        <field name="credit">4</field>
+        <field name="teacher_id" ref="teacher_8"/>
+    </record>
+    <record id="subject_9" model="school.subject">
+        <field name="name">Subject 9</field>
+        <field name="credit">2</field>
+        <field name="teacher_id" ref="teacher_9"/>
+    </record>
+    <record id="subject_10" model="school.subject">
+        <field name="name">Subject 10</field>
+        <field name="credit">3</field>
+        <field name="teacher_id" ref="teacher_10"/>
+    </record>
+    <record id="subject_11" model="school.subject">
+        <field name="name">Subject 11</field>
+        <field name="credit">4</field>
+        <field name="teacher_id" ref="teacher_11"/>
+    </record>
+    <record id="subject_12" model="school.subject">
+        <field name="name">Subject 12</field>
+        <field name="credit">2</field>
+        <field name="teacher_id" ref="teacher_12"/>
+    </record>
+    <record id="subject_13" model="school.subject">
+        <field name="name">Subject 13</field>
+        <field name="credit">3</field>
+        <field name="teacher_id" ref="teacher_13"/>
+    </record>
+    <record id="subject_14" model="school.subject">
+        <field name="name">Subject 14</field>
+        <field name="credit">4</field>
+        <field name="teacher_id" ref="teacher_14"/>
+    </record>
+    <record id="subject_15" model="school.subject">
+        <field name="name">Subject 15</field>
+        <field name="credit">2</field>
+        <field name="teacher_id" ref="teacher_15"/>
+    </record>
+    <record id="subject_16" model="school.subject">
+        <field name="name">Subject 16</field>
+        <field name="credit">3</field>
+        <field name="teacher_id" ref="teacher_16"/>
+    </record>
+    <record id="subject_17" model="school.subject">
+        <field name="name">Subject 17</field>
+        <field name="credit">4</field>
+        <field name="teacher_id" ref="teacher_17"/>
+    </record>
+    <record id="subject_18" model="school.subject">
+        <field name="name">Subject 18</field>
+        <field name="credit">2</field>
+        <field name="teacher_id" ref="teacher_18"/>
+    </record>
+    <record id="subject_19" model="school.subject">
+        <field name="name">Subject 19</field>
+        <field name="credit">3</field>
+        <field name="teacher_id" ref="teacher_19"/>
+    </record>
+    <record id="subject_20" model="school.subject">
+        <field name="name">Subject 20</field>
+        <field name="credit">4</field>
+        <field name="teacher_id" ref="teacher_20"/>
+    </record>
+    <record id="enrollment_1" model="school.enrollment">
+        <field name="student_id" ref="student_1"/>
+        <field name="subject_id" ref="subject_3"/>
+    </record>
+    <record id="enrollment_2" model="school.enrollment">
+        <field name="student_id" ref="student_2"/>
+        <field name="subject_id" ref="subject_5"/>
+    </record>
+    <record id="enrollment_3" model="school.enrollment">
+        <field name="student_id" ref="student_3"/>
+        <field name="subject_id" ref="subject_7"/>
+    </record>
+    <record id="enrollment_4" model="school.enrollment">
+        <field name="student_id" ref="student_4"/>
+        <field name="subject_id" ref="subject_9"/>
+    </record>
+    <record id="enrollment_5" model="school.enrollment">
+        <field name="student_id" ref="student_5"/>
+        <field name="subject_id" ref="subject_11"/>
+    </record>
+    <record id="enrollment_6" model="school.enrollment">
+        <field name="student_id" ref="student_6"/>
+        <field name="subject_id" ref="subject_13"/>
+    </record>
+    <record id="enrollment_7" model="school.enrollment">
+        <field name="student_id" ref="student_7"/>
+        <field name="subject_id" ref="subject_15"/>
+    </record>
+    <record id="enrollment_8" model="school.enrollment">
+        <field name="student_id" ref="student_8"/>
+        <field name="subject_id" ref="subject_17"/>
+    </record>
+    <record id="enrollment_9" model="school.enrollment">
+        <field name="student_id" ref="student_9"/>
+        <field name="subject_id" ref="subject_19"/>
+    </record>
+    <record id="enrollment_10" model="school.enrollment">
+        <field name="student_id" ref="student_10"/>
+        <field name="subject_id" ref="subject_1"/>
     </record>
 </odoo>

@@ -8,15 +8,15 @@
     "category": "Education",
     "depends": ["base"],
     "data": [
+        "security/security.xml",
+        "security/school_record_rules.xml",
+        "security/ir.model.access.csv",
         "data/sequence.xml",
         "views/menus.xml",
         "views/student_views.xml",
         "views/teacher_views.xml",
         "views/subject_views.xml",
         "views/enrollment_views.xml",
-        "security/security.xml",
-        "security/school_record_rules.xml",
-        "security/ir.model.access.csv",
     ],
     "demo": [
         "data/demo_data.xml",
