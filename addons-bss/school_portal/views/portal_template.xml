@@ -125,8 +125,10 @@
                         </p>
                     </div>
                     <div class="col text-end">
-                        <span class="badge bg-success" t-if="student.active">Active</span>
-                        <span class="badge bg-secondary" t-else="">Inactive</span>
+                        <div id="student_status_widget"
+                             t-att-data-student-id="student.id"
+                             t-att-data-active="student.active">
+                        </div>
                     </div>
                 </div>
 
@@ -146,10 +148,6 @@
                         <div class="col-md-4">
                             <strong>Gender:</strong>
                             <t t-esc="student.gender or 'N/A'"/>
-                        </div>
-                        <div class="col-md-12 mt-2" t-if="student.user_id">
-                            <strong>User Account:</strong>
-                            <t t-esc="student.user_id.login"/>
                         </div>
                     </div>
                 </div>
