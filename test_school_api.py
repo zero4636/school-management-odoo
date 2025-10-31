@@ -12,10 +12,10 @@ uid = common.authenticate(db, username, password, {})
 # 2. Connect to object
 models = xmlrpc.client.ServerProxy(f"{url}/xmlrpc/2/object")
 
-# 3. List students (page 1, 20 per page)
+# 3. List students (page 1, 3 per page)
 students = models.execute_kw(db, uid, password,
                              'school.student', 'api_list_students',
-                             [1, 3])  # page=1, per_page=20
+                             [1, 3])  # page=1, per_page=3
 print("Students:", students)
 print("==========================================================================")
 

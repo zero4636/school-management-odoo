@@ -6,6 +6,26 @@ class SchoolEnrollmentAPI(models.Model):
 
     @api.model
     def api_list_enrollments(self, student_identifier, page=1, per_page=20):
+        """
+        List enrollments for a specific student with pagination.
+        
+        Args:
+            student_identifier (int or str): Student ID (numeric) or student_id (string code)
+            page (int): Page number (default: 1, min: 1)
+            per_page (int): Results per page (default: 20, min: 1, max: 100)
+            
+        Returns:
+            dict: {
+                'total': int,
+                'page': int,
+                'per_page': int,
+                'student': dict with student info,
+                'enrollments': list of enrollment records
+            }
+            
+        Raises:
+            ValidationError: If student not found
+        """
         Student = self.env["school.student"]
 
         if isinstance(student_identifier, int):
@@ -14,6 +34,13 @@ class SchoolEnrollmentAPI(models.Model):
             student = Student.search([("student_id", "=", student_identifier)], limit=1)
         if not student:
             raise ValidationError(f"Student '{student_identifier}' not found")
+
+        if page < 1:
+            page = 1
+        if per_page < 1:
+            per_page = 20
+        if per_page > 100:
+            per_page = 100
 
         domain = [("student_id", "=", student.id)]
         offset = (page - 1) * per_page
@@ -48,6 +75,20 @@ class SchoolEnrollmentAPI(models.Model):
 
     @api.model
     def api_add_enrollment(self, student_identifier, subject_identifier):
+        """
+        Add a new enrollment (enroll a student in a subject).
+        
+        Args:
+            student_identifier (int or str): Student ID (numeric) or student_id (string code)
+            subject_identifier (int or str): Subject ID (numeric) or subject name (string)
+            
+        Returns:
+            dict: {
+                'status': 'success' or 'error',
+                'message': str,
+                'enrollment_id': int (only on success)
+            }
+        """
         Student = self.env["school.student"]
         Subject = self.env["school.subject"]
 
@@ -79,6 +120,7 @@ class SchoolEnrollmentAPI(models.Model):
         enrollment = self.create({
             "student_id": student.id,
             "subject_id": subject.id,
+            "state": "active",
         })
 
         return {
