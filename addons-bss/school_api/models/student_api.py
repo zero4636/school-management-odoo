@@ -5,10 +5,29 @@ class SchoolStudentAPI(models.Model):
 
     @api.model
     def api_list_students(self, page=1, per_page=20, domain=None, fields=None):
+        """
+        List students with pagination support.
+        
+        Args:
+            page (int): Page number (default: 1, min: 1)
+            per_page (int): Results per page (default: 20, min: 1, max: 100)
+            domain (list): Optional search domain filter
+            fields (list): Fields to return in response
+            
+        Returns:
+            dict: {
+                'total': int,
+                'page': int,
+                'per_page': int,
+                'students': list of student records
+            }
+        """
         if not page or page < 1:
             page = 1
         if not per_page or per_page < 1:
             per_page = 20
+        if per_page > 100:
+            per_page = 100
 
         domain = domain or []
         fields = fields or ["id", "name", "student_id", "dob", "gender", "age", "active", "user_id"]
